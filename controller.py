@@ -4,6 +4,7 @@ from datetime import datetime
 class CadastroController:
     def __init__(self):
         self.backend = backend
+        self.campos_validos = ['nome', 'cpf', 'telefone']
 
     def formatar_data(self, data):
         try:
@@ -27,7 +28,13 @@ class CadastroController:
     def deletar(self, codigo):
         success = self.backend.deletar(codigo)
         return success
-
-    def atualizar(self, codigo, novo_data, novo_cpf, novo_nome):
-        success = self.backend.atualizar(codigo, novo_data, novo_cpf, novo_nome)
-        return success
+    
+    def atualizar_campo(self, codigo, campo, novo_valor):
+        if campo == 'nome':
+            return self.backend.atualizar_nome(codigo, novo_valor)
+        elif campo == 'cpf':
+            return self.backend.atualizar_cpf(codigo, novo_valor)
+        elif campo == 'telefone':
+            return self.backend.atualizar_telefone(codigo, novo_valor)
+        else:
+            return False
