@@ -1,3 +1,13 @@
+from datetime import datetime
+
+def formatar_data(data):
+    try:
+        data_obj = datetime.strptime(data, '%d%m%Y')  # Ajuste o formato aqui
+        return data_obj.strftime('%d/%m/%Y')
+    except ValueError:
+        print("Data inválida. Use o formato DDMMAAAA.")
+        return None
+    
 from controller import CadastroController
 
 def main():
@@ -48,20 +58,21 @@ def main():
                 
         elif opcao == '4':
             codigo = input("Digite o código do cadastro a ser atualizado: ")
-            novo_data = input("Digite a nova data de cadastro (DD/MM/AAAA): ")
-            novo_cpf = input("Digite o novo CPF: ")
-            novo_nome = input("Digite o novo nome: ")
-            if controller.atualizar(codigo, novo_data, novo_cpf, novo_nome):
-                print("Cadastro atualizado com sucesso.")
-            else:
-                print("Cadastro não encontrado.")
-                
+            print("Campos disponíveis para atualização:", ", ".join(controller.campos_validos))
+            campo = input("Digite o campo que deseja atualizar: ")
+
+            if campo in controller.campos_validos:
+                novo_valor = input(f"Digite o novo valor para {campo}: ")
+                if controller.atualizar_campo(codigo, campo, novo_valor):
+                    print(f"{campo.capitalize()} atualizado com sucesso.")
+                else:
+                    print("Cadastro não encontrado ou campo inválido.")
         elif opcao == '0':
             print("Saindo do programa.")
             break
-        
+
         else:
-            print("Opção inválida. Tente novamente.")
-            
+            print("Opção inválida. Tente novamente.")    
+                                       
 if __name__ == "__main__":
     main()
