@@ -26,10 +26,8 @@ def main():
             data = input("Digite a data de cadastro (DDMMAAAA): ")
             cpf = input("Digite o CPF: ")
             nome = input("Digite o nome: ")
-            endereco = input("Digite o endereço: ")
-            telefone = input("Digite o telefone: ")
             
-            codigo = controller.cadastrar(data, cpf, nome, endereco, telefone)
+            codigo = controller.cadastrar(data, cpf, nome)
             if codigo:
                 print("Cadastro realizado com sucesso!")
                 print("Número de cadastro gerado:", codigo)
