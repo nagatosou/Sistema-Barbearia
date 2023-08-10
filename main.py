@@ -13,31 +13,42 @@ def main():
         opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            data = input("Digite a data de cadastro (DDMMAAAA): ")
-            cpf = input("Digite o CPF: ")
-            nome = input("Digite o nome: ")
-            endereco = input("Digite o endereço: ")
-            telefone = input("Digite o telefone: ")
+            print("1. Criar novo cadastro")
+            print("2. Cadastrar informações adicionais")
+            sub_opcao = input("Escolha uma sub-opção: ")
             
-            codigo = controller.cadastrar(data, cpf, nome, endereco, telefone)
-            if codigo:
-                print("Cadastro realizado com sucesso!")
-                print("Número de cadastro gerado:", codigo)
+            if sub_opcao == '1':
+                data = input("Digite a data de cadastro (DDMMAAAA): ")
+                cpf = input("Digite o CPF: ")
+                nome = input("Digite o nome: ")
+                
+                codigo = controller.cadastrar(data, cpf, nome)
+                if codigo:
+                    print("Cadastro realizado com sucesso!")
+                    print("Número de cadastro gerado:", codigo)
+                else:
+                    print("Erro ao cadastrar.")
+                
+            elif sub_opcao == '2':
+                codigo = input("Digite o código do cadastro: ")
+                email = input("Digite o email: ")
+                telefone = input("Digite o telefone: ")
+                endereco = input("Digite o endereço: ")
+                
+                controller.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
+                print("Informações adicionais cadastradas com sucesso.")
+                
             else:
-                print("Erro ao cadastrar.")
+                print("Opção inválida.")         
         
         elif opcao == '2':
-            codigo = input("Digite o código do cadastro: ")
-            cadastro = controller.consultar(codigo)
-            if cadastro:
-                print("Código:", cadastro[0])
-                print("Data de Cadastro:", cadastro[1])
-                print("CPF:", cadastro[2])
-                print("Nome:", cadastro[3])
-                print("Endereço:", cadastro[4])
-                print("Telefone:", cadastro[5])
+            id_nome_list = controller.listar_todos_ids_e_nomes()
+            if id_nome_list:
+                print("IDs e nomes das pessoas cadastradas:")
+                for id, nome in id_nome_list:
+                    print(f"ID: {id}, Nome: {nome}")
             else:
-                print("Cadastro não encontrado.")
+                print("Nenhum cadastro encontrado.")
                 
         elif opcao == '3':
             codigo = input("Digite o código do cadastro a ser deletado: ")
