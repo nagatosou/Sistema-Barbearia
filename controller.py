@@ -14,10 +14,10 @@ class CadastroController:
             print("Data inválida. Use o formato DDMMAAAA.")
             return None
 
-    def cadastrar(self, data, cpf, nome, endereco, telefone):
+    def cadastrar(self, data, cpf, nome):
         data_formatada = self.formatar_data(data)
         if data_formatada:
-            codigo = self.backend.cadastrar(data_formatada, cpf, nome, endereco, telefone)
+            codigo = self.backend.cadastrar(data_formatada, cpf, nome)
             return codigo
         return None
 
@@ -38,3 +38,13 @@ class CadastroController:
             return self.backend.atualizar_telefone(codigo, novo_valor)
         else:
             return False
+        
+    def listar_todos_ids_e_nomes(self):
+        id_nome_list = self.backend.consultar_todos_ids_e_nomes()
+        return id_nome_list  
+    
+    def cadastrar_dados_adicionais(self, codigo, email, telefone, endereco):
+        self.backend.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
+
+    def consultar_dados_adicionais(self, codigo):
+        return self.backend.consultar_dados_adicionais(codigo)
