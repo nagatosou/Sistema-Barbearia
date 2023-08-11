@@ -1,9 +1,9 @@
-import backend
+from backend import Backend
 from datetime import datetime
 
 class CadastroController:
     def __init__(self):
-        self.backend = backend
+        self.backend = Backend()
         self.campos_validos = ['nome', 'cpf', 'telefone']
 
     def formatar_data(self, data):
@@ -21,9 +21,12 @@ class CadastroController:
             return codigo
         return None
 
-    def consultar(self, codigo):
-        cadastro = self.backend.consultar(codigo)
-        return cadastro
+    def consultar_por_id(self, id):
+        cadastro = self.backend.consultar_por_id(id)
+        if cadastro:
+            dados_adicionais = self.backend.consultar_dados_adicionais(id)
+            return cadastro, dados_adicionais
+        return None, None
 
     def deletar(self, codigo):
         success = self.backend.deletar(codigo)
@@ -48,3 +51,9 @@ class CadastroController:
 
     def consultar_dados_adicionais(self, codigo):
         return self.backend.consultar_dados_adicionais(codigo)
+    
+    def cadastrar_plano(self, codigo, duracao):
+       self.backend.cadastrar_plano(codigo, duracao)
+
+    def verificar_dias_plano(self, codigo):
+        return self.backend.verificar_dias_plano(codigo)
