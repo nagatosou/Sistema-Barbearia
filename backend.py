@@ -21,10 +21,8 @@ class Backend:
             reader = csv.reader(csvfile)
             for row in reader:
                 if len(row) >= 4:
-                    id_nome_list.append((row[0], row[3]))  # Adiciona o ID e nome à lista de tuplas
+                    id_nome_list.append((row[0], row[3]))
         return id_nome_list
-
-    # Restante das funções...
 
     def atualizar_campo(self, codigo, campo, novo_valor):
         registros = []
@@ -51,7 +49,6 @@ class Backend:
             writer = csv.writer(csvfile)
             writer.writerow([codigo, email, telefone, endereco])
 
-    # Restante das funções...
 
     def cadastrar_plano(self, codigo, duracao):
         data_inicio = datetime.now().strftime('%d/%m/%Y')
@@ -70,3 +67,26 @@ class Backend:
                     dias_restantes = (data_fim - data_atual).days
                     return dias_restantes
         return None
+    
+    def consultar_dados_adicionais(self, codigo):
+        dados_adicionais = []
+        with open('dados_adicionais.csv', 'r', newline='') as csvfile:
+           reader = csv.reader(csvfile)
+           for row in reader:
+               if len(row) >= 1 and row[0] == codigo:
+                dados_adicionais = row[1], row[2], row[3]
+                break
+        return dados_adicionais
+    
+    def consultar_plano(self, codigo):
+      plano = []
+      with open('planos.csv', 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if len(row) >= 4 and row[0] == codigo:
+                plano = row[3], row[1], row[2]  # Assume que os dados estão na ordem duracao, data_inicio, data_fim
+                break  # Já encontrou o plano, pode sair do loop
+      return plano
+
+    
+
