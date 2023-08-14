@@ -22,10 +22,11 @@ class CadastroController:
         return None
 
     def consultar_por_id(self, id):
-        cadastro = self.backend.consultar_por_id(id)
-        if cadastro:
-            dados_adicionais = self.backend.consultar_dados_adicionais(id)
-            return cadastro, dados_adicionais
+        dados_adicionais = self.backend.consultar_dados_adicionais(id)  # Correção aqui
+        if dados_adicionais:
+            cadastro = self.backend.consultar_por_id(id)
+            email, telefone, endereco = dados_adicionais  # Desempacote aqui
+            return cadastro, (email, telefone, endereco)
         return None, None
 
     def deletar(self, codigo):
@@ -46,14 +47,18 @@ class CadastroController:
         id_nome_list = self.backend.consultar_todos_ids_e_nomes()
         return id_nome_list  
     
-    def cadastrar_dados_adicionais(self, codigo, email, telefone, endereco):
-        self.backend.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
-
-    def consultar_dados_adicionais(self, codigo):
-        return self.backend.consultar_dados_adicionais(codigo)
-    
     def cadastrar_plano(self, codigo, duracao):
        self.backend.cadastrar_plano(codigo, duracao)
 
     def verificar_dias_plano(self, codigo):
         return self.backend.verificar_dias_plano(codigo)
+    
+    def consultar_dados_adicionais(self, id):
+        return self.backend.consultar_dados_adicionais(id)
+    
+    def consultar_plano(self, codigo):
+      dias_restantes = self.backend.verificar_dias_plano(codigo)
+      if dias_restantes is not None:
+        plano = self.backend.consultar_plano(codigo)
+        return plano, dias_restantes
+      return None, None
