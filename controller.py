@@ -27,11 +27,14 @@ class CadastroController:
             cadastro = self.backend.consultar_por_id(id)
             email, telefone, endereco = dados_adicionais  # Desempacote aqui
             return cadastro, (email, telefone, endereco)
-        return None, None
+        return False
 
-    def deletar(self, codigo):
-        success = self.backend.deletar(codigo)
-        return success
+    def deletar_cadastro_completo(self, codigo):
+        if self.backend.deletar_cadastro(codigo):  # Corrigir o nome do método chamado aqui
+           self.backend.deletar_dados_adicionais(codigo)
+           self.backend.deletar_plano(codigo)
+           return True
+        return False
     
     def atualizar_campo(self, codigo, campo, novo_valor):
         if campo == 'nome':
@@ -53,8 +56,8 @@ class CadastroController:
     def verificar_dias_plano(self, codigo):
         return self.backend.verificar_dias_plano(codigo)
     
-    def consultar_dados_adicionais(self, id):
-        return self.backend.consultar_dados_adicionais(id)
+    def cadastrar_dados_adicionais(self, codigo, email, telefone, endereco):
+        self.backend.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
     
     def consultar_plano(self, codigo):
       dias_restantes = self.backend.verificar_dias_plano(codigo)
