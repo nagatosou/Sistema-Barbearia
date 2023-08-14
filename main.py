@@ -66,10 +66,10 @@ def main():
 
         elif opcao == '3':
             codigo = input("Digite o código do cadastro a ser deletado: ")
-            if controller.deletar(codigo):
-                print("Cadastro deletado com sucesso.")
+            if controller.deletar_cadastro_completo(codigo):
+               print("Cadastro deletado com sucesso.")
             else:
-                print("Cadastro não encontrado.")
+               print("Cadastro não encontrado.")
 
         elif opcao == '4':
             codigo = input("Digite o código do cadastro a ser atualizado: ")
