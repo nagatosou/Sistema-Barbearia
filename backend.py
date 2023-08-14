@@ -87,6 +87,20 @@ class Backend:
                 plano = row[3], row[1], row[2]  # Assume que os dados estão na ordem duracao, data_inicio, data_fim
                 break  # Já encontrou o plano, pode sair do loop
       return plano
+  
+  
+    def deletar_cadastro(self, codigo):
+        registros = []
+        with open('cadastros.csv', 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] != codigo:
+                    registros.append(row)
 
-    
+        with open('cadastros.csv', 'w', newline='') as csvfile:
+             writer = csv.writer(csvfile)
+             for registro in registros:
+                 writer.writerow(registro)
 
+
+      
