@@ -1,59 +1,123 @@
-from backend import Backend
-from datetime import datetime
+from controller import CadastroController
 
-class CadastroController:
-    def __init__(self):
-        self.backend = Backend()
-        self.campos_validos = ['nome', 'cpf', 'telefone']
+def main():
+    controller = CadastroController()
 
-    def formatar_data(self, data):
-        try:
-            data_obj = datetime.strptime(data, '%d%m%Y')
-            return data_obj.strftime('%d/%m/%Y')
-        except ValueError:
-            print("Data inválida. Use o formato DDMMAAAA.")
-            return None
+    while True:
+        print("1. Cadastrar")
+        print("2. Consultar")
+        print("3. Deletar")
+        print("4. Atualizar")
+        print("5. Cadastrar plano")
+        print("6. Consultar plano")
+        print("0. Sair")
 
-    def cadastrar(self, data, cpf, nome):
-        data_formatada = self.formatar_data(data)
-        if data_formatada:
-            codigo = self.backend.cadastrar(data_formatada, cpf, nome)
-            return codigo
-        return None
+        opcao = input("Escolha uma opção: ")
 
-    def consultar_por_id(self, id):
-        cadastro = self.backend.consultar_por_id(id)
-        if cadastro:
-            dados_adicionais = self.backend.consultar_dados_adicionais(id)
-            return cadastro, dados_adicionais
-        return None, None
+        if opcao == '1':
+            print("1. Criar novo cadastro")
+            print("2. Cadastrar informações adicionais")
+            sub_opcao = input("Escolha uma sub-opção: ")
 
-    def deletar(self, codigo):
-        success = self.backend.deletar(codigo)
-        return success
-    
-    def atualizar_campo(self, codigo, campo, novo_valor):
-        if campo == 'nome':
-            return self.backend.atualizar_nome(codigo, novo_valor)
-        elif campo == 'cpf':
-            return self.backend.atualizar_cpf(codigo, novo_valor)
-        elif campo == 'telefone':
-            return self.backend.atualizar_telefone(codigo, novo_valor)
+            if sub_opcao == '1':
+                data = input("Digite a data de cadastro (DDMMAAAA): ")
+                cpf = input("Digite o CPF: ")
+                nome = input("Digite o nome: ")
+
+                codigo = controller.cadastrar(data, cpf, nome)
+                if codigo:
+                    print("Cadastro realizado com sucesso!")
+                    print("Número de cadastro gerado:", codigo)
+                else:
+                    print("Erro ao cadastrar.")
+
+            elif sub_opcao == '2':
+                codigo = input("Digite o código do cadastro: ")
+                email = input("Digite o email: ")
+                telefone = input("Digite o telefone: ")
+                endereco = input("Digite o endereço: ")
+
+                controller.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
+                print("Informações adicionais cadastradas com sucesso.")
+
+            else:
+                print("Opção inválida.")
+
+        elif opcao == '2':
+            id_nome_list = controller.listar_todos_ids_e_nomes()
+            if id_nome_list:
+                print("IDs e nomes das pessoas cadastradas:")
+                for id, nome in id_nome_list:
+                    print(f"ID: {id}, Nome: {nome}")
+
+                sub_opcao = input("Digite 1 para consultar dados adicionais pelo ID, ou 0 para retornar ao menu principal: ")
+
+                if sub_opcao == '1':
+                    id_consulta = input("Digite o ID do cadastro que deseja consultar os dados adicionais: ")
+                    dados_adicionais = controller.consultar_dados_adicionais(id_consulta)
+
+                    if dados_adicionais:
+                        print("Dados Adicionais:")
+                        print(f"Email: {dados_adicionais[0]}, Telefone: {dados_adicionais[1]}, Endereço: {dados_adicionais[2]}")
+                    else:
+                        print("Dados adicionais não encontrados.")
+            else:
+                print("Nenhum cadastro encontrado.")
+
+        elif opcao == '3':
+            codigo = input("Digite o código do cadastro a ser deletado: ")
+            if controller.deletar(codigo):
+                print("Cadastro deletado com sucesso.")
+            else:
+                print("Cadastro não encontrado.")
+
+        elif opcao == '4':
+            codigo = input("Digite o código do cadastro a ser atualizado: ")
+            print("Campos disponíveis para atualização:", ", ".join(controller.campos_validos))
+            campo = input("Digite o campo que deseja atualizar: ")
+
+            if campo in controller.campos_validos:
+                novo_valor = input(f"Digite o novo valor para {campo}: ")
+                if controller.atualizar_campo(codigo, campo, novo_valor):
+                    print(f"{campo.capitalize()} atualizado com sucesso.")
+                else:
+                    print("Cadastro não encontrado.")
+            else:
+                print("Campo inválido.")
+                
+                
+                
+                
+
+        elif opcao == '5':
+            codigo = input("Digite o ID do cadastro: ")
+            duracao = int(input("Digite a duração do plano (30, 60 ou 90 dias): "))
+
+            if duracao in [30, 60, 90]:
+                controller.cadastrar_plano(codigo, duracao)
+                print("Plano cadastrado com sucesso.")
+            else:
+                print("Duração inválida. Escolha entre 30, 60 ou 90 dias.")
+                
+                
+        elif opcao == '6':
+          codigo = input("Digite o ID do cadastro para consultar o plano: ")
+          plano, dias_restantes = controller.consultar_plano(codigo)
+          if plano:
+           print("Plano Atual:")
+           print(f"Duração: {plano[0]} dias")
+           print(f"Data de Início: {plano[1]}")
+           print(f"Data de Término: {plano[2]}")
+           print(f"Dias Restantes: {dias_restantes}")
+          else:
+           print("Plano não encontrado.")      
+
+        elif opcao == '0':
+            print("Saindo do programa.")
+            break
+
         else:
-            return False
-        
-    def listar_todos_ids_e_nomes(self):
-        id_nome_list = self.backend.consultar_todos_ids_e_nomes()
-        return id_nome_list  
-    
-    def cadastrar_dados_adicionais(self, codigo, email, telefone, endereco):
-        self.backend.cadastrar_dados_adicionais(codigo, email, telefone, endereco)
+            print("Opção inválida. Tente novamente.")
 
-    def consultar_dados_adicionais(self, codigo):
-        return self.backend.consultar_dados_adicionais(codigo)
-    
-    def cadastrar_plano(self, codigo, duracao):
-       self.backend.cadastrar_plano(codigo, duracao)
-
-    def verificar_dias_plano(self, codigo):
-        return self.backend.verificar_dias_plano(codigo)
+if __name__ == "__main__":
+    main()
