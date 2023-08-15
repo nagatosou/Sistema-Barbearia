@@ -24,26 +24,6 @@ class Backend:
                     id_nome_list.append((row[0], row[3]))
         return id_nome_list
 
-    def atualizar_campo(self, codigo, campo, novo_valor):
-        registros = []
-        encontrado = False
-        with open('cadastros.csv', 'r', newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[0] == codigo:
-                    row[self.campos_indices[campo]] = novo_valor
-                    registros.append(row)
-                    encontrado = True
-                else:
-                    registros.append(row)
-        if encontrado:
-            with open('cadastros.csv', 'w', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                for registro in registros:
-                    writer.writerow(registro)
-            return True
-        return False
-
     def cadastrar_dados_adicionais(self, codigo, email, telefone, endereco):
         with open('dados_adicionais.csv', 'a', newline='') as csvfile:
             writer = csv.writer(csvfile)
@@ -96,11 +76,67 @@ class Backend:
             for row in reader:
                 if row[0] != codigo:
                     registros.append(row)
-
         with open('cadastros.csv', 'w', newline='') as csvfile:
-             writer = csv.writer(csvfile)
-             for registro in registros:
-                 writer.writerow(registro)
+            writer = csv.writer(csvfile)
+            writer.writerows(registros)
+
+    def deletar_dados_adicionais(self, codigo):
+        registros = []
+        with open('dados_adicionais.csv', 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] != codigo:
+                    registros.append(row)
+        with open('dados_adicionais.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(registros)
+
+    def deletar_plano(self, codigo):
+        registros = []
+        with open('planos.csv', 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] != codigo:
+                    registros.append(row)
+        with open('planos.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(registros)
+            
+            
+            
+            
+    def atualizar_campo(self, codigo, campo, novo_valor):
+        if campo in ['nome', 'cpf']:
+            arquivo_csv = 'cadastros.csv'
+        elif campo in ['email', 'endereco']:
+            arquivo_csv = 'dados_adicionais.csv'
+        elif campo == 'telefone':
+            arquivo_csv = 'dados_adicionais.csv'
+        else:
+            return False
+
+        registros = []
+        with open(arquivo_csv, 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] == codigo:
+                    if campo == 'nome':
+                        row[3] = novo_valor
+                    elif campo == 'cpf':
+                        row[2] = novo_valor
+                    elif campo == 'email':
+                        row[1] = novo_valor
+                    elif campo == 'endereco':
+                        row[3] = novo_valor
+                    elif campo == 'telefone':
+                        row[2] = novo_valor
+                registros.append(row)
+
+        with open(arquivo_csv, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(registros)
+
+        return True
 
 
       
