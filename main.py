@@ -4,13 +4,33 @@ def main():
     controller = CadastroController()
 
     while True:
+        print("Menu Principal:")
+        print("1. Acessar Menu de Cadastro")
+        print("2. Acessar Menu de Estoque de Produtos")
+        print("0. Sair do Programa")
+
+        opcao_principal = input("Escolha uma opção: ")
+
+        if opcao_principal == '1':
+            menu_cadastro(controller)
+        elif opcao_principal == '2':
+            menu_estoque(controller)
+        elif opcao_principal == '0':
+            print("Saindo do programa.")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+def menu_cadastro(controller):
+    while True:
+        print("Menu de Cadastro:")
         print("1. Cadastrar")
         print("2. Consultar")
         print("3. Deletar")
         print("4. Atualizar")
         print("5. Cadastrar plano")
         print("6. Consultar plano")
-        print("0. Sair")
+        print("0. Voltar ao Menu Principal")
 
         opcao = input("Escolha uma opção: ")
 
@@ -109,9 +129,31 @@ def main():
            print("Plano não encontrado.")      
 
         elif opcao == '0':
-            print("Saindo do programa.")
             break
+        else:
+            print("Opção inválida. Tente novamente.")
 
+def menu_estoque(controller):
+    while True:
+        print("Menu de Estoque de Produtos:")
+        print("1. Cadastrar Produto")
+        print("2. Consultar Estoque")
+        print("3. Atualizar Estoque")
+        print("0. Voltar ao Menu Principal")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == '1':
+            # Implementação do cadastro de produto aqui
+            pass
+        elif opcao == '2':
+            # Implementação da consulta de estoque aqui
+            pass
+        elif opcao == '3':
+            # Implementação da atualização de estoque aqui
+            pass
+        elif opcao == '0':
+            break
         else:
             print("Opção inválida. Tente novamente.")
 
