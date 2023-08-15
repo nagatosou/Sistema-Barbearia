@@ -30,21 +30,19 @@ class CadastroController:
         return False
 
     def deletar_cadastro_completo(self, codigo):
-        if self.backend.deletar_cadastro(codigo):  # Corrigir o nome do método chamado aqui
-           self.backend.deletar_dados_adicionais(codigo)
-           self.backend.deletar_plano(codigo)
-           return True
-        return False
-    
-    def atualizar_campo(self, codigo, campo, novo_valor):
-        if campo == 'nome':
-            return self.backend.atualizar_nome(codigo, novo_valor)
-        elif campo == 'cpf':
-            return self.backend.atualizar_cpf(codigo, novo_valor)
-        elif campo == 'telefone':
-            return self.backend.atualizar_telefone(codigo, novo_valor)
+        cadastro_deletado = self.backend.deletar_cadastro(codigo)
+        dados_adicionais_deletados = self.backend.deletar_dados_adicionais(codigo)
+        plano_deletado = self.backend.deletar_plano(codigo)
+
+        if cadastro_deletado and dados_adicionais_deletados and plano_deletado:
+            return True
         else:
             return False
+
+    
+    def atualizar_campo(self, codigo, campo, novo_valor):
+        return self.backend.atualizar_campo(codigo, campo, novo_valor)
+
         
     def listar_todos_ids_e_nomes(self):
         id_nome_list = self.backend.consultar_todos_ids_e_nomes()
