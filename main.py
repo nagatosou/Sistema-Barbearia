@@ -67,28 +67,24 @@ def main():
         elif opcao == '3':
             codigo = input("Digite o código do cadastro a ser deletado: ")
             if controller.deletar_cadastro_completo(codigo):
-               print("Cadastro deletado com sucesso.")
+               print("Cadastro deletado com sucesso.")       
             else:
-               print("Cadastro não encontrado.")
+                print("Cadastro não encontrado.")
 
         elif opcao == '4':
             codigo = input("Digite o código do cadastro a ser atualizado: ")
-            print("Campos disponíveis para atualização:", ", ".join(controller.campos_validos))
+            campos_disponiveis = ["nome", "cpf", "email", "endereco", "telefone"]
+            print("Campos disponíveis para atualização:", ", ".join(campos_disponiveis))
             campo = input("Digite o campo que deseja atualizar: ")
-
-            if campo in controller.campos_validos:
+            if campo in campos_disponiveis:
                 novo_valor = input(f"Digite o novo valor para {campo}: ")
                 if controller.atualizar_campo(codigo, campo, novo_valor):
-                    print(f"{campo.capitalize()} atualizado com sucesso.")
+                    print("Cadastro atualizado com sucesso.")
                 else:
-                    print("Cadastro não encontrado.")
+                    print("Cadastro não encontrado ou campo inválido.")
             else:
                 print("Campo inválido.")
-                
-                
-                
-                
-
+                      
         elif opcao == '5':
             codigo = input("Digite o ID do cadastro: ")
             duracao = int(input("Digite a duração do plano (30, 60 ou 90 dias): "))
