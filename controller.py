@@ -21,12 +21,12 @@ class CadastroController:
             return codigo
         return None
 
-    def consultar_por_id(self, id):
+    def consultar_dados_adicionais(self, id):  # Correção aqui
         dados_adicionais = self.backend.consultar_dados_adicionais(id)  # Correção aqui
         if dados_adicionais:
-            cadastro = self.backend.consultar_por_id(id)
-            email, telefone, endereco = dados_adicionais  # Desempacote aqui
-            return cadastro, (email, telefone, endereco)
+           cadastro = self.backend.dados_adicionais(id)  # Correção aqui
+           email, telefone, endereco = dados_adicionais  # Desempacote aqui
+           return cadastro, (email, telefone, endereco)
         return False
 
     def deletar_cadastro_completo(self, codigo):
