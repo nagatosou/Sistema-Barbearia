@@ -20,6 +20,9 @@ def main():
             break
         else:
             print("Opção inválida. Tente novamente.")
+            
+    
+    
 
 def menu_cadastro(controller):
     while True:
@@ -142,10 +145,24 @@ def menu_estoque(controller):
         opcao = input("Escolha uma opção: ")
 
         if opcao == '1':
-            # Implementação do cadastro de produto aqui
-            pass
+                data = input("Digite a data de cadastro (DDMMAAAA): ")
+                nome_produto = input("Digite o Nome do produto: ")
+                quantidade = input("Digite Quantidade: ")
+
+                codigo = controller.produto_cadastro(data, nome_produto, quantidade)
+                
+                if codigo:
+                    print("Cadastro realizado com sucesso!")
+                    print("Codigo produto gerado:", codigo)
+                else:
+                    print("Erro ao cadastrar.")
+                pass
         elif opcao == '2':
-            # Implementação da consulta de estoque aqui
+            id_produtos_list = controller.listar_todos_ids_e_produtos()
+            if id_produtos_list:
+                print("IDs e produtos cadastrados:")
+                for id, produto in id_produtos_list:
+                    print(f"ID: {id}, produto: {produto}")
             pass
         elif opcao == '3':
             # Implementação da atualização de estoque aqui
