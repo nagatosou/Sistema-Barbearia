@@ -135,8 +135,27 @@ class Backend:
         with open(arquivo_csv, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerows(registros)
+            
+            
+    def produto_cadastro(self, data, nome_produto, quantidade):
+        codigo = self.gerar_codigo()
+        with open('estoque.csv', 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([codigo, data, nome_produto, quantidade])
+        return codigo
+
+    def listar_todos_ids_e_produtos(self):
+        id_produto_list = []
+        with open('estoque.csv', 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if len(row) >= 4:
+                    id_produto_list.append((row[0], row[2]))
+        return id_produto_list
+
 
         return True
+
 
 
       
