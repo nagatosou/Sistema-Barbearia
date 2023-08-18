@@ -73,16 +73,14 @@ def menu_cadastro(controller):
                 sub_opcao = input("Digite 1 para consultar dados adicionais pelo ID, ou 0 para retornar ao menu principal: ")
 
                 if sub_opcao == '1':
-                    id_consulta = input("Digite o ID do cadastro que deseja consultar os dados adicionais: ")
-                    dados_adicionais = controller.consultar_dados_adicionais(id_consulta)
+                   id_consulta = input("Digite o ID do cadastro que deseja consultar os dados adicionais: ")
+                   cadastro, dados_adicionais = controller.consultar_dados_adicionais(id_consulta)
 
-                    if dados_adicionais:
-                        print("Dados Adicionais:")
-                        print(f"Email: {dados_adicionais[0]}, Telefone: {dados_adicionais[1]}, Endereço: {dados_adicionais[2]}")
-                    else:
-                        print("Dados adicionais não encontrados.")
-            else:
-                print("Nenhum cadastro encontrado.")
+                if dados_adicionais:
+                   print("Dados Adicionais:")
+                   print(f"Email: {dados_adicionais[0]}, Telefone: {dados_adicionais[1]}, Endereço: {dados_adicionais[2]}")
+                else:
+                   print("Dados adicionais não encontrados.")
 
         elif opcao == '3':
             codigo = input("Digite o código do cadastro a ser deletado: ")
