@@ -62,4 +62,16 @@ class CadastroController:
       if dias_restantes is not None:
         plano = self.backend.consultar_plano(codigo)
         return plano, dias_restantes
-      return None, None
+    
+    def produto_cadastro(self, data, nome_produto, quantidade):
+        data_formatada = self.formatar_data(data)
+        if data_formatada:
+            codigo = self.backend.produto_cadastro(data_formatada, nome_produto, quantidade)
+            return codigo  
+        
+        
+    def listar_todos_ids_e_produtos(self):
+        id_produto_list = self.backend.listar_todos_ids_e_produtos()
+        return id_produto_list 
+    
+        return None, None
