@@ -76,8 +76,8 @@ def menu_cadastro(controller):
                 sub_opcao = input("Digite 1 para consultar dados adicionais pelo ID, ou 0 para retornar ao menu principal: ")
 
                 if sub_opcao == '1':
-                   id_consulta = input("Digite o ID do cadastro que deseja consultar os dados adicionais: ")
-                   cadastro, dados_adicionais = controller.consultar_dados_adicionais(id_consulta)
+                   id = input("Digite o ID do cadastro que deseja consultar os dados adicionais: ")
+                   dados_adicionais = controller.consultar_dados_adicionais(id)
 
                 if dados_adicionais:
                    print("Dados Adicionais:")
@@ -100,9 +100,7 @@ def menu_cadastro(controller):
             if campo in campos_disponiveis:
                 novo_valor = input(f"Digite o novo valor para {campo}: ")
                 if controller.atualizar_campo(codigo, campo, novo_valor):
-                    print("Cadastro atualizado com sucesso.")
-                else:
-                    print("Cadastro não encontrado ou campo inválido.")
+                 print("Cadastro atualizado com sucesso.")
             else:
                 print("Campo inválido.")
                       
