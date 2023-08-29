@@ -48,15 +48,14 @@ class Backend:
                     return dias_restantes
         return None
     
-    def consultar_dados_adicionais(self, codigo):
-        dados_adicionais = []
+    def consultar_dados_adicionais(self, id):
         with open('dados_adicionais.csv', 'r', newline='') as csvfile:
-           reader = csv.reader(csvfile)
-           for row in reader:
-               if len(row) >= 1 and row[0] == codigo:
-                dados_adicionais = row[1], row[2], row[3]
-                break
-        return dados_adicionais
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if len(row) >= 1 and row[0] == id:
+                    email, telefone, endereco = row[1], row[2], row[3]
+                    return email, telefone, endereco
+        return None  # Retornar None se os dados não forem encontrados
     
     def consultar_plano(self, codigo):
       plano = []
@@ -101,40 +100,43 @@ class Backend:
         with open('planos.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerows(registros)
-            
-            
-            
-            
+    
     def atualizar_campo(self, codigo, campo, novo_valor):
+        arquivo_csv = None
+
         if campo in ['nome', 'cpf']:
             arquivo_csv = 'cadastros.csv'
-        elif campo in ['email', 'endereco']:
-            arquivo_csv = 'dados_adicionais.csv'
-        elif campo == 'telefone':
+        elif campo in ['email', 'endereco', 'telefone']:
             arquivo_csv = 'dados_adicionais.csv'
         else:
             return False
 
-        registros = []
         with open(arquivo_csv, 'r', newline='') as csvfile:
             reader = csv.reader(csvfile)
-            for row in reader:
-                if row[0] == codigo:
-                    if campo == 'nome':
-                        row[3] = novo_valor
-                    elif campo == 'cpf':
-                        row[2] = novo_valor
-                    elif campo == 'email':
-                        row[1] = novo_valor
+            rows = list(reader)
+
+        for row in rows:
+            if row[0] == codigo:
+                index = rows.index(row)
+                if campo in ['nome']:
+                    rows[index][3] = novo_valor
+                elif campo in ['cpf']:
+                    rows[index][2] = novo_valor
+                elif campo in ['email', 'endereco', 'telefone']:
+                    if campo == 'email':
+                        rows[index][1] = novo_valor
                     elif campo == 'endereco':
-                        row[3] = novo_valor
+                        rows[index][2] = novo_valor
                     elif campo == 'telefone':
-                        row[2] = novo_valor
-                registros.append(row)
+                        rows[index][2] = novo_valor
+                break
 
         with open(arquivo_csv, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerows(registros)
+            writer.writerows(rows)
+
+        return True
+     
             
             
     def produto_cadastro(self, data, nome_produto, quantidade):
@@ -155,6 +157,7 @@ class Backend:
 
 
         return True
+
 
 
 
