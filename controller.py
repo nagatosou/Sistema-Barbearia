@@ -24,9 +24,8 @@ class CadastroController:
     def consultar_dados_adicionais(self, id):  # Correção aqui
         dados_adicionais = self.backend.consultar_dados_adicionais(id)  # Correção aqui
         if dados_adicionais:
-           cadastro = self.backend.dados_adicionais(id)  # Correção aqui
-           email, telefone, endereco = dados_adicionais  # Desempacote aqui
-           return cadastro, (email, telefone, endereco)
+           email, telefone, endereco = dados_adicionais
+           return email, telefone, endereco
         return False
 
     def deletar_cadastro_completo(self, codigo):
@@ -41,7 +40,9 @@ class CadastroController:
 
     
     def atualizar_campo(self, codigo, campo, novo_valor):
-        return self.backend.atualizar_campo(codigo, campo, novo_valor)
+        sucesso = self.backend.atualizar_campo(codigo, campo, novo_valor)
+        return sucesso
+    
 
         
     def listar_todos_ids_e_nomes(self):
