@@ -1,4 +1,4 @@
-# controlador
+# projeto sistema barbearia
 Projeto que visa criar um sitema de controle de assinaturas e cadastro de cliente 
 
 Bom esse projeto simples onde eu estou usando ele para aprender programaçao, entao estou querendo trabalhar com banco de dados e sistema de 
